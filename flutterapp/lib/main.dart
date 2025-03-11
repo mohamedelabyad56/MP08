@@ -60,10 +60,7 @@ class _ProductosScreenState extends State<ProductosScreen> {
 
   Future<void> _cargarDatos() async {
     try {
-      final snapshot = await _firestore
-          .collection('ventas')
-          .orderBy('fecha', descending: true)
-          .get();
+      final snapshot = await _firestore.collection('ventas').get();
 
       setState(() {
         _documentos = snapshot.docs;
@@ -79,16 +76,6 @@ class _ProductosScreenState extends State<ProductosScreen> {
         _cargando = false;
       });
       print('❌ Error en la consulta: $e');
-    }
-  }
-
-  String _formatearFecha(dynamic timestamp) {
-    try {
-      if (timestamp == null) return 'Fecha desconocida';
-      final fecha = (timestamp as Timestamp).toDate();
-      return DateFormat('dd/MM/yyyy HH:mm').format(fecha);
-    } catch (e) {
-      return 'Fecha inválida';
     }
   }
 
@@ -149,14 +136,6 @@ class _ProductosScreenState extends State<ProductosScreen> {
                 _buildInfoRow('Cantidad:', data['cantidad']?.toString() ?? '0'),
                 _buildInfoRow('Precio:', '\$${data['precio']?.toStringAsFixed(2) ?? '0.00'}'),
                 _buildInfoRow('Total:', '\$${data['total']?.toStringAsFixed(2) ?? '0.00'}'),
-                const SizedBox(height: 8),
-                Text(
-                  _formatearFecha(data['fecha']),
-                  style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 12
-                  ),
-                ),
               ],
             ),
           ),
